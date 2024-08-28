@@ -21,9 +21,9 @@ from src.utils import *
 def get_args():
     parser = argparse.ArgumentParser("Training ConvLSTM model")
     parser.add_argument("--dataset_dir", "-d", type=str, default="./dataset")
-    parser.add_argument("--batch_size", "-b", type=int, default=64)
-    parser.add_argument("--epochs", "-e", type=int, default=100)
     parser.add_argument("--model", "-m", type=str, default="convlstm")
+    parser.add_argument("--batch_size", "-b", type=int, default=64)
+    parser.add_argument("--epochs", "-e", type=int, default=1000)
     parser.add_argument("--sequence_length", "-l", type=int, default=20)
     parser.add_argument("--image_saved", "-is", type=str, default="./images")
     parser.add_argument("--model_saved", "-s", type=str, default="./model")
@@ -55,19 +55,16 @@ def main(args):
                                                              batch_size=args.batch_size,
                                                              validation_split=0.2,
                                                              callbacks=[early_stopping])
-        model_evaluation_history = convlstm_model.evaluate(features_test, labels_test)
-
-        # Get the loss and accuracy
-        model_evaluation_loss, model_evaluation_accuracy = model_evaluation_history
 
         # save model
         model_file_name = f"{args.model_saved}/convlstm_model.h5"
         convlstm_model.save(model_file_name)
 
         # visualize plot
-        plot_metric(convlstm_model_training_history, 'loss', 'val_loss', 'Total Loss and Validation Loss')
+        plot_metric(convlstm_model_training_history, 'loss', 'val_loss',
+                    'Total Loss and Validation Loss', "ConvLSTM_loss")
         plot_metric(convlstm_model_training_history, 'accuracy', 'val_accuracy',
-                    'Total Accuracy vs Total Validation Accuracy')
+                    'Total Accuracy vs Total Validation Accuracy', "ConvLSTM_accuracy")
 
     elif args.model == "lrcn":
         LRCN_model = create_LRCN_model()
@@ -79,19 +76,16 @@ def main(args):
                                                      shuffle=True,
                                                      validation_split=0.2,
                                                      callbacks=[early_stopping_callback])
-        model_evaluation_history = LRCN_model.evaluate(features_test, labels_test)
-
-        # Get the loss and accuracy
-        model_evaluation_loss, model_evaluation_accuracy = model_evaluation_history
 
         # save model
         model_file_name = f"{args.model_saved}/LRCN_model.h5"
         LRCN_model.save(model_file_name)
 
         # visualize plot
-        plot_metric(LRCN_model_training_history, 'loss', 'val_loss', 'Total Loss vs Total Validation Loss')
+        plot_metric(LRCN_model_training_history, 'loss', 'val_loss',
+                    'Total Loss vs Total Validation Loss', "LRCN_loss")
         plot_metric(LRCN_model_training_history, 'accuracy', 'val_accuracy',
-                    'Total Accuracy vs Total Validation Accuracy')
+                    'Total Accuracy vs Total Validation Accuracy', "LRCN_accuracy")
 
 
 if __name__ == '__main__':

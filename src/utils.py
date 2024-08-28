@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from src.config import *
 
 
-def plot_metric(model_training_history, metric_name_1, metric_name_2, plot_name):
+def plot_metric(model_training_history, metric_name_1, metric_name_2, plot_name, image_name):
     metric_value_1 = model_training_history.history[metric_name_1]
     metric_value_2 = model_training_history.history[metric_name_2]
 
@@ -15,5 +15,5 @@ def plot_metric(model_training_history, metric_name_1, metric_name_2, plot_name)
     plt.title(str(plot_name))
     plt.legend()
 
-    plt.savefig("./images/{}".format(str(plot_name)), bbox_inches="tight")
+    plt.savefig("./images/{}".format(str(image_name)), bbox_inches="tight")
     plt.show()
